@@ -9,24 +9,22 @@
     </div>
   </center>
   <h1>Your Links</h1>
-  <div id="links">
-    <table class="table table-responsive table-bordered table-striped">
-      <thead>
-        <th>Title</th>
-        <th>URL</th>
-        <th>Status</th>
-        <th>Edit</th>
-      </thead>
-      <tbody>
-        <% @links.each do |link| %>
-          <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %>"> 
-            <td class="read-<%= link.read %>"><%= link.title %></td>
-            <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
-            <td class="status"><%= link_to "Mark as #{status(link)}", '#' %></td>
-            <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+  <table class="table table-responsive table-bordered table-striped" id="links">
+    <thead>
+      <th>Title</th>
+      <th>URL</th>
+      <th>Status</th>
+      <th>Edit</th>
+    </thead>
+    <tbody>
+      <% @links.each do |link| %>
+        <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %>">
+          <td class="read-<%= link.read %>"><%= link.title %></td>
+          <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
+          <td class="status"><%= link_to "Mark as #{status(link)}", '#' %></td>
+          <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>

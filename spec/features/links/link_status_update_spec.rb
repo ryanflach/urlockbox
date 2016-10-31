@@ -9,7 +9,7 @@ RSpec.feature 'Link status update' do
       and_return(@user)
   end
 
-  scenario 'they mark an unread link as read' do
+  scenario 'they mark an unread link as read', js: true do
     link = Link.create!(
       url: 'http://www.google.com',
       title: 'Google',
@@ -18,14 +18,13 @@ RSpec.feature 'Link status update' do
 
     visit '/'
 
-    within("#links ##{link.id}") { click_on 'Mark as Read' }
+    click_on 'Mark as Read'
 
-    within("#links ##{link.id}") do
-      expect(page).to have_link('Mark as Unread')
-    end
+    expect(page).to have_link('Mark as Unread')
+    expect(page).to_not have_link('Mark as Read')
   end
 
-  scenario 'they mark a read link as unread' do
+  scenario 'they mark a read link as unread', js: true do
     link = Link.create!(
       url: 'http://www.google.com',
       title: 'Google',
@@ -35,10 +34,9 @@ RSpec.feature 'Link status update' do
 
     visit '/'
 
-    within("#links ##{link.id}") { click_on 'Mark as Unread' }
+    click_on 'Mark as Unread'
 
-    within("#links ##{link.id}") do
-      expect(page).to have_link('Mark as Read')
-    end
+    expect(page).to have_link('Mark as Read')
+    expect(page).to_not have_link('Mark as Unread')
   end
 end

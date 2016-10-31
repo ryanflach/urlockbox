@@ -48,7 +48,7 @@ const handleError = (error) => {
 
 const searchBar = () => {
   const $links = $('.link');
-  
+
   $('#search-box').on('keyup', (e) => {
     const currentEntry = e.target.value;
 
