@@ -25,7 +25,7 @@ RSpec.feature 'Link creation' do
         expect(page).to have_content("Link to Google successfully added.")
         expect(Link.count).to eq(1)
         within('#links') do
-          expect(page).to have_link('Google', 'http://www.google.com')
+          expect(page).to have_link('http://www.google.com')
         end
       end
     end

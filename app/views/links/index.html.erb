@@ -1,3 +1,4 @@
+<%= link_to "Sign Out", logout_path, method: :delete %>
 <h1>Add a New Link</h1>
 <div class="well" id="link-form">
   <%= form_for(:link, url: links_path) do |f| %>
@@ -16,14 +17,24 @@
 </div>
 <% if @links.count > 0 %>
   <h1>Your Links</h1>
-  <div class="well", id="links">
-    <ul>
-      <% @links.each do |link| %>
-      <li id="<%= link.id %>">
-        <%= link_to link.title, link.url, class: "read-#{link.read}" %> (<%= link_to "Mark as #{status(link)}", link_path(link), method: :put %>)
-      </li>
-      <% end %>
-    </ul>
+  <div id="links">
+    <table class="table table-responsive table-bordered table-striped">
+      <thead>
+        <th>Title</th>
+        <th>URL</th>
+        <th>Status</th>
+        <th>Edit</th>
+      </thead>
+      <tbody>
+        <% @links.each do |link| %>
+          <tr id="<%= link.id %>">
+            <td class="read-<%= link.read %>"><%= link.title %></td>
+            <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
+            <td><%= link_to "Mark as #{status(link)}", link_path(link), method: :put %></td>
+            <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 <% end %>
-<%= link_to "Sign Out", logout_path, method: :delete %>
