@@ -28,7 +28,7 @@ class LinksController < ApplicationController
       render :edit
     else
       @link.update_attributes(read: @link.opposite_read_value)
-      redirect_to links_path
+      render json: @link
     end
   end
 

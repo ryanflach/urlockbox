@@ -16,7 +16,7 @@
           <tr id="<%= link.id %>">
             <td class="read-<%= link.read %>"><%= link.title %></td>
             <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
-            <td><%= link_to "Mark as #{status(link)}", link_path(link), method: :put %></td>
+            <td class="status"><%= link_to "Mark as #{status(link)}", '#' %></td>
             <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
           </tr>
         <% end %>
