@@ -19,7 +19,9 @@
   <div class="well", id="links">
     <ul>
       <% @links.each do |link| %>
-      <li><%= link_to link.title, link.url %></li>
+      <li id="<%= link.id %>">
+        <%= link_to link.title, link.url, class: "read-#{link.read}" %> (<%= link_to "Mark as #{status(link)}", link_path(link), method: :put %>)
+      </li>
       <% end %>
     </ul>
   </div>

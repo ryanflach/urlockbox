@@ -5,8 +5,8 @@ RSpec.feature 'Link creation' do
   before(:each) do
     user = User.create!(email: 'hello@example.com', password: 'hello')
     allow_any_instance_of(ApplicationController).
-    to receive(:current_user).
-    and_return(user)
+      to receive(:current_user).
+      and_return(user)
   end
 
   context 'authenticated user' do
