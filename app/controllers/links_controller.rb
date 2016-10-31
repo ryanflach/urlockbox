@@ -17,7 +17,13 @@ class LinksController < ApplicationController
 
   def update
     @link = Link.find(params[:id])
-    @link.update_attributes(read: @link.opposite_read_value)
+    if params[:link] && @link.update(link_params)
+      flash[:success] = "Link updated successfully."
+    elsif params[:link]
+      flash[:danger] = @link.errors.full_messages.join(', ')
+    else
+      @link.update_attributes(read: @link.opposite_read_value)
+    end
     redirect_to links_path
   end
 
