@@ -5,13 +5,14 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      session[:user_id] = user.id
+    @user = User.new(user_params)
+    if @user.save
+      session[:user_id] = @user.id
+      flash[:success] = "Account created. Welcome, #{@user.email}!"
       redirect_to links_path
     else
-      flash.now[:danger] = user.erorrs.full_messages.join(', ')
-      render :new
+      flash[:danger] = @user.errors.full_messages.join(', ')
+      redirect_to new_user_path
     end
   end
 

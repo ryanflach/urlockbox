@@ -14,36 +14,23 @@ RSpec.feature 'User can log in' do
       end
       expect(page).to have_link('Sign Up')
     end
+  end
 
-    scenario 'they create an account with valid information' do
+  context 'Existing user' do
+    scenario 'they are redirected to the links path when logged in' do
+      user = User.create!(email: 'hello@example.com', password: 'hello')
+
       visit '/'
-      click_on 'Sign Up'
-
-      expect(current_path).to eq(new_user_path)
 
       within('#login-form') do
-        fill_in 'E-mail', with: 'user@example.com'
-        fill_in 'Password', with: 'pass'
-        fill_in 'Verify Password', with: 'pass'
-        click_on 'Sign Up'
+        fill_in 'E-mail', with: user.email
+        fill_in 'Password', with: 'hello'
+        fill_in 'Verify Password', with: 'hello'
+        click_on 'Login'
       end
 
       expect(current_path).to eq(links_path)
-      expect(page).to have_content('Welcome, user@example.com!')
-    end
-
-    scenario 'they create an account with invalid information' do
-      visit new_user_path
-
-      within('#login-form') do
-        fill_in 'E-mail', with: 'user@example.com'
-        fill_in 'Password', with: 'pass'
-        fill_in 'Verify Password', with: 'mismatched pass'
-        click_on 'Sign Up'
-      end
-
-      expect(current_path).to eq(new_user_path)
-      expect(page).to have_content('Passwords must match. Please try again.')
+      expect(page).to have_content("Successfully logged in. Welcome, #{user.email}!")
     end
   end
 end
