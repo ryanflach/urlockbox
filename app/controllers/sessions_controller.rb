@@ -4,16 +4,5 @@ class SessionsController < ApplicationController
   end
 
   def create
-    create_account if new_user?
-  end
-
-  private
-
-  def new_user?
-    params[:commit] == "Sign Up"
-  end
-
-  def create_account
-    
   end
 end
