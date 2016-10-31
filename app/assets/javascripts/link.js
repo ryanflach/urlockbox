@@ -29,6 +29,7 @@ const createLinkHTML = (linkData) => {
 
 const reRenderLink = (link) => {
   $('#' + link.id).replaceWith(link.html);
+  handleReadStatusUpdate();
 };
 
 const newReadStatusText = (current) => {
