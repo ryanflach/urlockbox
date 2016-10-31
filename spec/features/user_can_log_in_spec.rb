@@ -10,8 +10,8 @@ RSpec.feature 'User can log in' do
         expect(page).to have_field('E-mail')
         expect(page).to have_field('Password')
         expect(page).to have_field('Verify Password')
-        expect(page).to have_link('Login')
-        expect(page).to have_link('Sign Up')
+        expect(page).to have_button('Login')
+        expect(page).to have_button('Sign Up')
       end
     end
   end
