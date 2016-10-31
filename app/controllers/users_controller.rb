@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def process_password_mismatch
-    if !passwords_match?('user')
+    if params[:user][:password] != params[:user][:verify_password]
       flash[:danger] = 'Passwords must match. Please try again.'
       redirect_to new_user_path
     end
