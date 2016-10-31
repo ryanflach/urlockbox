@@ -22,12 +22,14 @@ class LinksController < ApplicationController
   def update
     if params[:link] && @link.update(link_params)
       flash[:success] = "Link updated successfully."
+      redirect_to links_path
     elsif params[:link]
-      flash[:danger] = @link.errors.full_messages.join(', ')
+      flash.now[:danger] = @link.errors.full_messages.join(', ')
+      render :edit
     else
       @link.update_attributes(read: @link.opposite_read_value)
+      redirect_to links_path
     end
-    redirect_to links_path
   end
 
   private
