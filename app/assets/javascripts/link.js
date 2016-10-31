@@ -1,5 +1,6 @@
 $(document).ready(() => {
   handleReadStatusUpdate();
+  searchBar();
 });
 
 const handleReadStatusUpdate = () => {
@@ -19,7 +20,7 @@ const handleReadStatusUpdate = () => {
 const createLinkHTML = (linkData) => {
   return({
     id: linkData.id,
-    html: "<tr id='" + linkData.id + "'>" +
+    html: "<tr id='" + linkData.id + "' class='link' data-all='" + linkData.title + " " + linkData.url +"'>" +
     "<td class='read-" + linkData.read + "'>" + linkData.title + "</td>" +
     "<td class='read-" + linkData.read + "'><a href='" + linkData.url + "'>" + linkData.url + "</a></td>" +
     "<td class='status'><a href='#'>" + newReadStatusText(linkData.read) + "</a></td>" +
@@ -30,6 +31,7 @@ const createLinkHTML = (linkData) => {
 const reRenderLink = (link) => {
   $('#' + link.id).replaceWith(link.html);
   handleReadStatusUpdate();
+  searchBar();
 };
 
 const newReadStatusText = (current) => {
@@ -42,4 +44,21 @@ const newReadStatusText = (current) => {
 
 const handleError = (error) => {
   console.log(error);
+};
+
+const searchBar = () => {
+  const $links = $('.link');
+  
+  $('#search-box').on('keyup', (e) => {
+    const currentEntry = e.target.value;
+
+    $links.each((index, link) => {
+      let $link = $(link);
+      if ($link.data('all').toLowerCase().indexOf(currentEntry.toLowerCase()) !== -1){
+        $link.show();
+      } else {
+        $link.hide();
+      }
+    });
+  });
 };
