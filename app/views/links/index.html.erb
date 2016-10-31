@@ -1,2 +1,27 @@
-<h1>Links</h1>
+<h1>Add a New Link</h1>
+<div class="well" id="link-form">
+  <%= form_for(:link, url: links_path) do |f| %>
+    <div class="form-group">
+      <%= f.label :url, "URL" %>
+      <%= f.url_field :url, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+    <%= f.hidden_field :user_id, { value: current_user.id }%>
+    <%= f.submit "Submit", class: "btn btn-default" %>
+  <% end %>
+</div>
+<% if @links.count > 0 %>
+  <h1>Your Links</h1>
+  <div class="well", id="links">
+    <ul>
+      <% @links.each do |link| %>
+      <li><%= link_to link.title, link.url %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 <%= link_to "Sign Out", logout_path, method: :delete %>
