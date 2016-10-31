@@ -1,20 +1,6 @@
 <%= link_to "Sign Out", logout_path, method: :delete %>
 <h1>Add a New Link</h1>
-<div class="well" id="link-form">
-  <%= form_for(:link, url: links_path) do |f| %>
-    <div class="form-group">
-      <%= f.label :url, "URL" %>
-      <%= f.url_field :url, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :title %>
-      <%= f.text_field :title, class: "form-control" %>
-    </div>
-    <%= f.hidden_field :user_id, { value: current_user.id }%>
-    <%= f.submit "Submit", class: "btn btn-default" %>
-  <% end %>
-</div>
+<%= render partial: 'shared/link_form', locals: { target: :link, path: links_path, button: "Submit"} %>
 <% if @links.count > 0 %>
   <h1>Your Links</h1>
   <div id="links">

@@ -1,4 +1,5 @@
 class LinksController < ApplicationController
+  before_action :set_link, only: [:edit, :update]
   def index
     redirect_to login_path and return if !current_user
     @links = Link.where(user: current_user)
@@ -15,8 +16,10 @@ class LinksController < ApplicationController
     end
   end
 
+  def edit
+  end
+
   def update
-    @link = Link.find(params[:id])
     if params[:link] && @link.update(link_params)
       flash[:success] = "Link updated successfully."
     elsif params[:link]
@@ -31,5 +34,9 @@ class LinksController < ApplicationController
 
   def link_params
     params.require(:link).permit(:url, :title, :user_id)
+  end
+
+  def set_link
+    @link = Link.find(params[:id])
   end
 end

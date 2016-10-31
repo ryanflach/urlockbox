@@ -1,0 +1,2 @@
+<h1>Edit <%= @link.title %></h1>
+<%= render partial: 'shared/link_form', locals: { target: @link, path: link_path(@link), button: "Update"} %>
