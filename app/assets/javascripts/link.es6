@@ -33,6 +33,7 @@ const reRenderLink = (link) => {
   $('#' + link.id).replaceWith(link.html);
   handleReadStatusUpdate();
   searchBar();
+  filterByReadStatus();
 };
 
 const newReadStatusText = (current) => {
@@ -65,10 +66,9 @@ const searchBar = () => {
 };
 
 const filterByReadStatus = () => {
+  const $links = $('.link');
 
   $('.filter').on('click', (e) => {
-    showAllLinks();
-    const $links = $('.link');
     const $button = $(e.target);
 
     $links.each((index, link) => {
@@ -79,6 +79,8 @@ const filterByReadStatus = () => {
         ($button.text() === 'Filter Unread' && linkStatus === 'read-true')
       ) {
         $link.hide();
+      } else {
+        $link.show();
       }
     });
   });
@@ -90,13 +92,4 @@ const showAllLinks = () => {
   }).then(collectLinks)
   .then(renderLinks)
   .fail(handleError);
-};
-
-const collectLinks = (linkData) => linkData.map(createLinkHTML);
-
-const renderLinks = (linkData) => {
-  const links = linkData.map((link) => link.html)
-  $('.link-table-body').html(links);
-  searchBar();
-  handleReadStatusUpdate();
 };

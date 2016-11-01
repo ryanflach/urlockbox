@@ -35,10 +35,10 @@ RSpec.feature 'User filters links' do
       click_on 'Filter Unread'
 
       within('#links') do
-        expect(page).to have_content('Hi')
-        expect(page).to have_link('http://www.hi.com')
-        expect(page).to_not have_content('Google')
-        expect(page).to_not have_link('http://www.google.com')
+        expect(page).to_not have_content('Hi')
+        expect(page).to_not have_link('http://www.hi.com')
+        expect(page).to have_content('Google')
+        expect(page).to have_link('http://www.google.com')
       end
     end
   end
