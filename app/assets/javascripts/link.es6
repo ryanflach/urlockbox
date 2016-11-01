@@ -90,8 +90,8 @@ const filterByReadStatus = () => {
 
 const sortAlphabetically = (links) => {
   const sorted = links.sort((a, b) => {
-    let titleA = a.title.toUpperCase();
-    let titleB = b.title.toUpperCase();
+    let titleA = $(a).children().first().text().toUpperCase();
+    let titleB = $(b).children().first().text().toUpperCase();
 
     if (titleA < titleB) {
       return -1;
@@ -102,9 +102,6 @@ const sortAlphabetically = (links) => {
     }
   });
 
-  const sortedHTML = sorted.map((link) => {
-    return createLinkHTML(link).html
-  });
-
-  $('.link-table-body').html(sortedHTML.join(''));
+  $('.link-table-body').html(sorted);
+  handleReadStatusUpdate();
 };
