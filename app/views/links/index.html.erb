@@ -8,8 +8,8 @@
       <input type="text" class="form-control" id="search-box" placeholder="Search for a link...">
     </div>
     <div>
-      <button class="btn btn-default" type="button" name="filter-read">Filter Read</button>
-      <button class="btn btn-default" type="button" name="filter-unread">Filter Unread</button>
+      <button class="btn btn-default filter" type="button" name="filter-read">Filter Read</button>
+      <button class="btn btn-default filter" type="button" name="filter-unread">Filter Unread</button>
     </div>
   </center>
   <h1>Your Links</h1>
@@ -20,7 +20,7 @@
       <th>Status</th>
       <th>Edit</th>
     </thead>
-    <tbody>
+    <tbody class='link-table-body'>
       <% @links.each do |link| %>
         <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %>">
           <td class="read-<%= link.read %>"><%= link.title %></td>

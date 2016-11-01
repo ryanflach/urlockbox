@@ -1,6 +1,7 @@
 $(document).ready(() => {
   handleReadStatusUpdate();
   searchBar();
+  filterByReadStatus();
 });
 
 const handleReadStatusUpdate = () => {
@@ -61,4 +62,41 @@ const searchBar = () => {
       }
     });
   });
+};
+
+const filterByReadStatus = () => {
+
+  $('.filter').on('click', (e) => {
+    showAllLinks();
+    const $links = $('.link');
+    const $button = $(e.target);
+
+    $links.each((index, link) => {
+      let $link = $(link);
+      let linkStatus = $link.find('td').attr('class');
+      if (
+        ($button.text() === 'Filter Read' && linkStatus === 'read-false') ||
+        ($button.text() === 'Filter Unread' && linkStatus === 'read-true')
+      ) {
+        $link.hide();
+      }
+    });
+  });
+};
+
+const showAllLinks = () => {
+  $.ajax({
+    url: '/links.json'
+  }).then(collectLinks)
+  .then(renderLinks)
+  .fail(handleError);
+};
+
+const collectLinks = (linkData) => linkData.map(createLinkHTML);
+
+const renderLinks = (linkData) => {
+  const links = linkData.map((link) => link.html)
+  $('.link-table-body').html(links);
+  searchBar();
+  handleReadStatusUpdate();
 };
