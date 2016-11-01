@@ -19,7 +19,7 @@ RSpec.feature 'User filters links' do
     scenario 'they filter by read links' do
       visit '/'
 
-      click_on 'Show Read Only'
+      click_on 'Filter Read'
 
       within('#links') do
         expect(page).to have_content('Hi')
@@ -32,7 +32,7 @@ RSpec.feature 'User filters links' do
     scenario 'they filter by unread links' do
       visit '/'
 
-      click_on 'Show Unread Only'
+      click_on 'Filter Unread'
 
       within('#links') do
         expect(page).to have_content('Hi')
