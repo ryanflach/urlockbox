@@ -69,27 +69,42 @@ const filterByReadStatus = () => {
   const $links = $('.link');
 
   $('.filter').on('click', (e) => {
-    const $button = $(e.target);
+    const buttonText = $(e.target).text();
 
     $links.each((index, link) => {
       let $link = $(link);
       let linkStatus = $link.find('td').attr('class');
       if (
-        ($button.text() === 'Filter Read' && linkStatus === 'read-false') ||
-        ($button.text() === 'Filter Unread' && linkStatus === 'read-true')
+        (buttonText === 'Filter Read' && linkStatus === 'read-false') ||
+        (buttonText === 'Filter Unread' && linkStatus === 'read-true')
       ) {
         $link.hide();
       } else {
         $link.show();
       }
     });
+
+    if (buttonText === 'Sort All A-Z') { sortAlphabetically($links); }
   });
 };
 
-const showAllLinks = () => {
-  $.ajax({
-    url: '/links.json'
-  }).then(collectLinks)
-  .then(renderLinks)
-  .fail(handleError);
+const sortAlphabetically = (links) => {
+  const sorted = links.sort((a, b) => {
+    let titleA = a.title.toUpperCase();
+    let titleB = b.title.toUpperCase();
+
+    if (titleA < titleB) {
+      return -1;
+    } else if (titleA > titleB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+  const sortedHTML = sorted.map((link) => {
+    return createLinkHTML(link).html
+  });
+
+  $('.link-table-body').html(sortedHTML.join(''));
 };

@@ -3,10 +3,6 @@ class LinksController < ApplicationController
   def index
     redirect_to login_path and return if !current_user
     @links = Link.where(user: current_user)
-    respond_to do |format|
-      format.html
-      format.json { render json: @links.to_json }
-    end
   end
 
   def create
