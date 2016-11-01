@@ -27,6 +27,15 @@ RSpec.feature 'User filters links' do
         expect(page).to_not have_content('Google')
         expect(page).to_not have_link('http://www.google.com')
       end
+
+      click_on 'Show All'
+
+      within('#links') do
+        expect(page).to have_content('Hi')
+        expect(page).to have_link('http://www.hi.com')
+        expect(page).to have_content('Google')
+        expect(page).to have_link('http://www.google.com')
+      end
     end
 
     scenario 'they filter by unread links' do
@@ -37,6 +46,15 @@ RSpec.feature 'User filters links' do
       within('#links') do
         expect(page).to_not have_content('Hi')
         expect(page).to_not have_link('http://www.hi.com')
+        expect(page).to have_content('Google')
+        expect(page).to have_link('http://www.google.com')
+      end
+
+      click_on 'Show All'
+
+      within('#links') do
+        expect(page).to have_content('Hi')
+        expect(page).to have_link('http://www.hi.com')
         expect(page).to have_content('Google')
         expect(page).to have_link('http://www.google.com')
       end
