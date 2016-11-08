@@ -14,35 +14,16 @@ RSpec.describe Link, type: :model do
     expect(link.save).to eq(false)
   end
 
-  it 'should filter by read links' do
+  it 'should provide a string of tag names' do
     user = User.create!(email: 'hi@hi.com', password: 'pass')
-    read = Link.create!(
+    tag_1 = Tag.create!(name: 'hello')
+    tag_2 = Tag.create!(name: 'great')
+    link = Link.create!(
       url: 'http://www.google.com',
-      title: 'not allowed',
+      title: 'Google',
       user: user,
-      read: 'true')
-    unread = Link.create!(
-      url: 'http://www.bing.com',
-      title: 'not allowed',
-      user: user
+      tags: [tag_1, tag_2]
     )
-    expect(Link.read.count).to eq(1)
-    expect(Link.read.first).to eq(read)
-  end
-
-  it 'should filter by unread links' do
-    user = User.create!(email: 'hi@hi.com', password: 'pass')
-    read = Link.create!(
-      url: 'http://www.google.com',
-      title: 'not allowed',
-      user: user,
-      read: 'true')
-    unread = Link.create!(
-      url: 'http://www.bing.com',
-      title: 'not allowed',
-      user: user
-    )
-    expect(Link.unread.count).to eq(1)
-    expect(Link.unread.first).to eq(unread)
+    expect(link.tag_names).to eq('hello great')
   end
 end

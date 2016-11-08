@@ -10,11 +10,7 @@ class Link < ApplicationRecord
     read == 'true' ? 'false' : 'true'
   end
 
-  def self.read
-    where(read: 'true')
-  end
-
-  def self.unread
-    where(read: 'false')
+  def tag_names
+    tags.pluck(:name).join(' ')
   end
 end

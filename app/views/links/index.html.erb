@@ -25,7 +25,7 @@
     </thead>
     <tbody class='link-table-body'>
       <% @links.each do |link| %>
-        <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %>">
+        <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %> <%= link.tag_names %>">
           <td class="read-<%= link.read %>"><%= link.title %></td>
           <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
           <td class="tags">
