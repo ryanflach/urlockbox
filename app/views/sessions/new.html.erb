@@ -1,3 +1,17 @@
 <center><h1>Log In</h1></center>
-<%= render partial: 'shared/login_form', locals: { target: :session, path: login_path, button: "Login"} %>
+<div class="well" id="login-form">
+  <%= form_for(:session, url: login_path) do |f| %>
+    <div class="form-group">
+      <%= f.label :email, "E-mail" %>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password %>
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Login", class: "btn btn-default" %>
+  <% end %>
+</div>
 <center>New to URLockbox? <%= link_to "Sign Up", new_user_path %></center>
