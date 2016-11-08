@@ -17,28 +17,12 @@ const handleReadStatusUpdate = () => {
   });
 };
 
-// const createLinkHTML = (linkData) => {
-//   return({
-//     id: linkData.id,
-//     html:
-//       `<tr id='${linkData.id}' class='link' data-all='${linkData.title} ${linkData.url} ${linkData.tag_names}'>
-//         <td class='read-${linkData.read}'>${linkData.title}</td>
-//         <td class='read-${linkData.read}'><a href='${linkData.url}'>${linkData.url}</a></td>
-//         <td class='tags'>${linkTagButtons(linkData.tags)}</td>
-//         <td class='status'><a href='#'>${newReadStatusText(linkData.read)}</a></td>
-//         <td><a href='/links/${linkData.id}/edit' class='btn btn-xs btn-default'>Edit</a></td>
-//       </tr>`
-//   });
-// };
-
 const reRenderLink = (link) => {
-  console.log(`Link #${link.id} read status updated to ${link.read}`)
-  $(`#${link.id} .status`).html(
+  const $link = $(`#${link.id}`);
+  $link.find('.status').html(
     `<a href='#'>${newReadStatusText(link.read)}</a>`
   );
-  $(`#${link.id} .affected-by-read`).toggleClass(`read-${link.read}`);
-  // handleReadStatusUpdate();
-  searchBar();
+  $link.find('.affected-by-read').toggleClass('read-true read-false');
   filterByReadStatus();
 };
 
@@ -81,8 +65,8 @@ const filterByReadStatus = () => {
       let $link = $(link);
       let linkStatus = $link.find('td').attr('class');
       if (
-        (buttonText === 'Filter Read' && linkStatus === 'read-false') ||
-        (buttonText === 'Filter Unread' && linkStatus === 'read-true')
+        (buttonText === 'Filter Read' && linkStatus.includes('read-false')) ||
+        (buttonText === 'Filter Unread' && linkStatus.includes('read-true'))
       ) {
         $link.hide();
       } else {
