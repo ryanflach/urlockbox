@@ -9,7 +9,7 @@ const handleReadStatusUpdate = () => {
     e.preventDefault();
     const id = $(e.target).closest('tr')[0].id;
     $.ajax({
-      url: '/links/' + id,
+      url: `/links/${id}`,
       method: 'put',
       data: { id: id }
     }).then(createLinkHTML)
@@ -21,16 +21,18 @@ const handleReadStatusUpdate = () => {
 const createLinkHTML = (linkData) => {
   return({
     id: linkData.id,
-    html: "<tr id='" + linkData.id + "' class='link' data-all='" + linkData.title + " " + linkData.url +"'>" +
-    "<td class='read-" + linkData.read + "'>" + linkData.title + "</td>" +
-    "<td class='read-" + linkData.read + "'><a href='" + linkData.url + "'>" + linkData.url + "</a></td>" +
-    "<td class='status'><a href='#'>" + newReadStatusText(linkData.read) + "</a></td>" +
-    "<td><a href='/links/" + linkData.id + "/edit' class='btn btn-xs btn-default'> Edit </a></td>"
+    html:
+      `<tr id='${linkData.id}' class='link' data-all='${linkData.title} ${linkData.url}'>
+        <td class='read-${linkData.read}'>${linkData.title}</td>
+        <td class='read-${linkData.read}'><a href='${linkData.url}'>${linkData.url}</a></td>
+        <td class='status'><a href='#'>${newReadStatusText(linkData.read)}</a></td>
+        <td><a href='/links/${linkData.id}/edit' class='btn btn-xs btn-default'>Edit</a></td>
+      </tr>`
   });
 };
 
 const reRenderLink = (link) => {
-  $('#' + link.id).replaceWith(link.html);
+  $(`#${link.id}`).replaceWith(link.html);
   handleReadStatusUpdate();
   searchBar();
   filterByReadStatus();
