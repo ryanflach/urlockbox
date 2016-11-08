@@ -19,6 +19,7 @@
     <thead>
       <th>Title</th>
       <th>URL</th>
+      <th>Tags</th>
       <th>Status</th>
       <th>Edit</th>
     </thead>
@@ -27,6 +28,13 @@
         <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %>">
           <td class="read-<%= link.read %>"><%= link.title %></td>
           <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
+          <td class="tags">
+            <% if link.tags %>
+              <% link.tags.each do |tag| %>
+                <button class="btn btn-info btn-xs" type="button"><%= tag.name %></button>
+              <% end %>
+            <% end %>
+          </td>
           <td class="status"><%= link_to "Mark as #{status(link)}", '#' %></td>
           <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
         </tr>
