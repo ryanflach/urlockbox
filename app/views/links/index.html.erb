@@ -1,4 +1,4 @@
-<%= link_to "Sign Out", logout_path, method: :delete, class: 'btn btn-primary' %>
+<%= link_to "Sign Out", logout_path, method: :delete, class: 'btn btn-primary', id: 'signout' %>
 <h1>Add a New Link</h1>
 <%= render partial: 'shared/link_form', locals: { target: :link, path: links_path, button: "Submit"} %>
 <% if @links.count > 0 %>
