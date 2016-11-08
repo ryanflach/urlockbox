@@ -9,7 +9,7 @@ const handleReadStatusUpdate = () => {
     e.preventDefault();
     const id = $(e.target).closest('tr')[0].id;
     $.ajax({
-      url: `/links/${id}`,
+      url: `api/v1/links/${id}`,
       method: 'put',
       data: { id: id }
     }).then(createLinkHTML)

@@ -1,5 +1,6 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:edit, :update]
+  
   def index
     redirect_to login_path and return if !current_user
     @links = Link.where(user: current_user)
@@ -20,15 +21,12 @@ class LinksController < ApplicationController
   end
 
   def update
-    if params[:link] && @link.update(link_params)
+    if @link.update(link_params)
       flash[:success] = "Link updated successfully."
       redirect_to links_path
-    elsif params[:link]
+    else
       flash.now[:danger] = @link.errors.full_messages.join(', ')
       render :edit
-    else
-      @link.update_attributes(read: @link.opposite_read_value)
-      render json: @link
     end
   end
 
