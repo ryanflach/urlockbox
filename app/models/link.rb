@@ -11,6 +11,6 @@ class Link < ApplicationRecord
   end
 
   def tag_names
-    tags.pluck(:name).join(' ')
+    tags.pluck(:name).join(', ')
   end
 end

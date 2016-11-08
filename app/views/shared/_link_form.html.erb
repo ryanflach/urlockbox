@@ -12,7 +12,7 @@
 
     <div class="form-group">
       <%= f.label :tags %>
-      <%= f.text_field :tags, class: "form-control" %>
+      <%= f.text_field :tags, class: "form-control", value: target.is_a?(Link) ? target.tag_names : '' %>
     </div>
 
     <%= f.hidden_field :user_id, { value: current_user.id }%>

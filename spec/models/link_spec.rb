@@ -14,7 +14,7 @@ RSpec.describe Link, type: :model do
     expect(link.save).to eq(false)
   end
 
-  it 'should provide a string of tag names' do
+  it 'should provide a string of comma-separated tag names' do
     user = User.create!(email: 'hi@hi.com', password: 'pass')
     tag_1 = Tag.create!(name: 'hello')
     tag_2 = Tag.create!(name: 'great')
@@ -24,6 +24,6 @@ RSpec.describe Link, type: :model do
       user: user,
       tags: [tag_1, tag_2]
     )
-    expect(link.tag_names).to eq('hello great')
+    expect(link.tag_names).to eq('hello, great')
   end
 end
