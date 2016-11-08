@@ -9,7 +9,13 @@
       <%= f.label :title %>
       <%= f.text_field :title, class: "form-control" %>
     </div>
+
+    <div class="form-group">
+      <%= f.label :tags %>
+      <%= f.text_field :tags, class: "form-control", value: target.is_a?(Link) ? target.tag_names : '' %>
+    </div>
+
     <%= f.hidden_field :user_id, { value: current_user.id }%>
-    <%= f.submit button, class: "btn btn-default" %>
+    <%= f.submit button, class: "btn btn-success" %>
   <% end %>
 </div>

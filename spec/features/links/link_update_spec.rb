@@ -7,8 +7,12 @@ RSpec.feature 'Link update' do
     allow_any_instance_of(ApplicationController).
       to receive(:current_user).
       and_return(user)
-    user.links.create!(title: 'Google', url: 'http://www.google.com')
-    @link = user.links.first
+    tag = Tag.create!(name: 'hello')
+    @link = user.links.create!(
+      title: 'Google',
+      url: 'http://www.google.com',
+      tags: [tag]
+    )
   end
 
   context 'authorized user with links' do
@@ -29,6 +33,7 @@ RSpec.feature 'Link update' do
         expect(Link.first.title).to eq('SUPER GOOGLE')
         within("#links ##{@link.id}") do
           expect(page).to have_content('SUPER GOOGLE')
+          expect(page).to have_button('hello')
           expect(page).to_not have_content('Google')
           expect(page).to have_link('http://www.google.com')
         end
@@ -50,6 +55,7 @@ RSpec.feature 'Link update' do
         expect(Link.first.url).to eq('http://images.google.com')
         within("#links ##{@link.id}") do
           expect(page).to have_content('Google')
+          expect(page).to have_button('hello')
           expect(page).to have_link('http://images.google.com')
           expect(page).to_not have_link('http://www.google.com')
         end
@@ -73,9 +79,58 @@ RSpec.feature 'Link update' do
         expect(Link.first.url).to eq('http://images.google.com')
         within("#links ##{@link.id}") do
           expect(page).to have_content('FUN GOOGLE IMAGES')
+          expect(page).to have_button('hello')
           expect(page).to have_link('http://images.google.com')
           expect(page).to_not have_content('Google')
           expect(page).to_not have_link('http://www.google.com')
+        end
+      end
+
+      scenario 'they add a tag' do
+        visit '/'
+
+        within("#links ##{@link.id}") do
+          click_on 'Edit'
+        end
+
+        expect(current_path).to eq(edit_link_path(@link))
+
+        fill_in 'Tags', with: 'hello, fun'
+        click_on 'Update'
+
+        expect(current_path).to eq(links_path)
+        expect(Link.first.title).to eq('Google')
+        expect(Link.first.url).to eq('http://www.google.com')
+        expect(Link.first.tags.first.name).to eq('hello')
+        expect(Link.first.tags.second.name).to eq('fun')
+        within("#links ##{@link.id}") do
+          expect(page).to have_button('hello')
+          expect(page).to have_button('fun')
+          expect(page).to have_content('Google')
+          expect(page).to have_link('http://www.google.com')
+        end
+      end
+
+      scenario 'they remove a tag' do
+        visit '/'
+
+        within("#links ##{@link.id}") do
+          click_on 'Edit'
+        end
+
+        expect(current_path).to eq(edit_link_path(@link))
+
+        fill_in 'Tags', with: ''
+        click_on 'Update'
+
+        expect(current_path).to eq(links_path)
+        expect(Link.first.title).to eq('Google')
+        expect(Link.first.url).to eq('http://www.google.com')
+        expect(Link.first.tags.count).to eq(0)
+        within("#links ##{@link.id}") do
+          expect(page).to_not have_button('hello')
+          expect(page).to have_content('Google')
+          expect(page).to have_link('http://www.google.com')
         end
       end
     end

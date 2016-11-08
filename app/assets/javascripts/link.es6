@@ -1,37 +1,36 @@
 $(document).ready(() => {
   handleReadStatusUpdate();
   searchBar();
+  filterByReadStatus();
+  deleteLinkButtons();
+  filterByTag();
 });
 
 const handleReadStatusUpdate = () => {
-  $('#links .status').on('click', (e) => {
+  $('#links .status a').on('click', (e) => {
     e.preventDefault();
-    const id = $(e.target).closest('tr')[0].id;
+    const id = $(e.target).closest('tr').attr('id');
     $.ajax({
-      url: '/links/' + id,
+      url: `api/v1/links/${id}`,
       method: 'put',
       data: { id: id }
-    }).then(createLinkHTML)
-    .then(reRenderLink)
+    }).then(reRenderLink)
     .fail(handleError);
   });
 };
 
-const createLinkHTML = (linkData) => {
-  return({
-    id: linkData.id,
-    html: "<tr id='" + linkData.id + "' class='link' data-all='" + linkData.title + " " + linkData.url +"'>" +
-    "<td class='read-" + linkData.read + "'>" + linkData.title + "</td>" +
-    "<td class='read-" + linkData.read + "'><a href='" + linkData.url + "'>" + linkData.url + "</a></td>" +
-    "<td class='status'><a href='#'>" + newReadStatusText(linkData.read) + "</a></td>" +
-    "<td><a href='/links/" + linkData.id + "/edit' class='btn btn-xs btn-default'> Edit </a></td>"
-  });
-};
-
 const reRenderLink = (link) => {
-  $('#' + link.id).replaceWith(link.html);
-  handleReadStatusUpdate();
-  searchBar();
+  const $link = $(`#${link.id}`);
+  $link.find('.status').html(
+    `<a href='#'>${newReadStatusText(link.read)}</a>`
+  );
+
+  const $cells = $link.find('.affected-by-read');
+  $cells.removeClass('read-true read-false');
+  $cells.addClass(`read-${link.read}`);
+
+  filterByReadStatus();
+  filterByTag();
 };
 
 const newReadStatusText = (current) => {
@@ -61,4 +60,79 @@ const searchBar = () => {
       }
     });
   });
+};
+
+const filterByReadStatus = () => {
+  const $links = $('.link');
+
+  $('.filter').on('click', (e) => {
+    const buttonText = $(e.target).text();
+
+    $links.each((index, link) => {
+      let $link = $(link);
+      let linkStatus = $link.find('td').attr('class');
+      if (
+        (buttonText === 'Filter Read' && linkStatus.includes('read-false')) ||
+        (buttonText === 'Filter Unread' && linkStatus.includes('read-true'))
+      ) {
+        $link.hide();
+      } else {
+        $link.show();
+      }
+    });
+
+    if (buttonText === 'Sort All A-Z') { sortAlphabetically($links); }
+  });
+};
+
+const sortAlphabetically = (links) => {
+  const sorted = links.sort((a, b) => {
+    let titleA = $(a).children().first().text().toUpperCase();
+    let titleB = $(b).children().first().text().toUpperCase();
+
+    if (titleA < titleB) {
+      return -1;
+    } else if (titleA > titleB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+  $('.link-table-body').html(sorted);
+  handleReadStatusUpdate();
+};
+
+const deleteLinkButtons = () => {
+  $('.delete').on('click', (e) => {
+    const $tr = $(e.target).closest('tr');
+    const id = $tr.attr('id');
+    $.ajax({
+      url: `api/v1/links/${id}`,
+      method: 'delete',
+      data: { id: id }
+    }).then((_response) => $tr.remove())
+    .fail(handleError);
+  });
+};
+
+const filterByTag = () => {
+  const $links = $('.link');
+
+  $('.tags button').on('click', (e) => {
+    const tagName = $(e.target).text();
+
+    $links.each((index, link) => {
+      let $link = $(link);
+      let linkTags = $link.find('.tags').text().split('\n')
+                     .map((tag) => tag.trim())
+                     .filter((tag) => tag.length);
+      if (linkTags.includes(tagName)) {
+        $link.show();
+      } else {
+        $link.hide();
+      }
+    });
+  });
+  handleReadStatusUpdate();
 };

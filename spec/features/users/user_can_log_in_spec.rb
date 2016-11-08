@@ -9,7 +9,7 @@ RSpec.feature 'User can log in' do
       within('#login-form') do
         expect(page).to have_field('E-mail')
         expect(page).to have_field('Password')
-        expect(page).to have_field('Verify Password')
+        expect(page).to_not have_field('Verify Password')
         expect(page).to have_button('Login')
       end
       expect(page).to have_link('Sign Up')
@@ -25,7 +25,6 @@ RSpec.feature 'User can log in' do
       within('#login-form') do
         fill_in 'E-mail', with: user.email
         fill_in 'Password', with: 'hello'
-        fill_in 'Verify Password', with: 'hello'
         click_on 'Login'
       end
 

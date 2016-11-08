@@ -11,7 +11,7 @@ RSpec.feature 'Link creation' do
 
   context 'authenticated user' do
     context 'valid parameters' do
-      scenario 'they visit the root path' do
+      scenario 'with no tags' do
         expect(Link.count).to eq(0)
 
         visit '/'
@@ -26,6 +26,48 @@ RSpec.feature 'Link creation' do
         expect(Link.count).to eq(1)
         within('#links') do
           expect(page).to have_link('http://www.google.com')
+        end
+      end
+
+      scenario 'with one tag' do
+        expect(Link.count).to eq(0)
+
+        visit '/'
+
+        within('#link-form') do
+          fill_in 'URL', with: 'http://www.google.com'
+          fill_in 'Title', with: 'Google'
+          fill_in 'Tags', with: 'search'
+          click_on 'Submit'
+        end
+
+        expect(page).to have_content("Link to Google successfully added.")
+        expect(Link.count).to eq(1)
+        within('#links') do
+          expect(page).to have_link('http://www.google.com')
+          expect(page).to have_button('search')
+        end
+      end
+
+      scenario 'with multiple tags' do
+        expect(Link.count).to eq(0)
+
+        visit '/'
+
+        within('#link-form') do
+          fill_in 'URL', with: 'http://www.google.com'
+          fill_in 'Title', with: 'Google'
+          fill_in 'Tags', with: 'search, EVERYTHING, AmAzInG'
+          click_on 'Submit'
+        end
+
+        expect(page).to have_content("Link to Google successfully added.")
+        expect(Link.count).to eq(1)
+        within('#links') do
+          expect(page).to have_link('http://www.google.com')
+          expect(page).to have_button('search')
+          expect(page).to have_button('everything')
+          expect(page).to have_button('amazing')
         end
       end
     end

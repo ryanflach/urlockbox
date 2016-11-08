@@ -10,7 +10,6 @@ RSpec.feature 'User can log out' do
       within('#login-form') do
         fill_in 'E-mail', with: user.email
         fill_in 'Password', with: 'hello'
-        fill_in 'Verify Password', with: 'hello'
         click_on 'Login'
       end
 
@@ -19,7 +18,6 @@ RSpec.feature 'User can log out' do
       expect(current_path).to eq(login_path)
       expect(page).to have_button("Login")
       expect(page).to_not have_link("Sign Out")
-
     end
   end
 end

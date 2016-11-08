@@ -1,11 +1,21 @@
-<%= link_to "Sign Out", logout_path, method: :delete, class: 'btn btn-primary' %>
-<h1>Add a New Link</h1>
+<div class="col-md-12 header">
+  <h1 class="col-md-11">Add a New Link</h1>
+  <%= link_to "Sign Out", logout_path, method: :delete, class: 'btn btn-primary col-md-1 sign-out' %>
+</div>
+
 <%= render partial: 'shared/link_form', locals: { target: :link, path: links_path, button: "Submit"} %>
+
 <% if @links.count > 0 %>
   <center>
     <div class="form-group" id="link-search-box">
       <label for="search-box">Search</label>
       <input type="text" class="form-control" id="search-box" placeholder="Search for a link...">
+    </div>
+    <div>
+      <button class="btn btn-default filter" type="button" name="filter-read">Filter Read</button>
+      <button class="btn btn-default filter" type="button" name="filter-unread">Filter Unread</button>
+      <button class="btn btn-default filter" type="button" name="filter-all">Show All</button>
+      <button class="btn btn-default filter" type="button" name="sort-alphabetically">Sort All A-Z</button>
     </div>
   </center>
   <h1>Your Links</h1>
@@ -13,16 +23,27 @@
     <thead>
       <th>Title</th>
       <th>URL</th>
+      <th>Tags</th>
       <th>Status</th>
-      <th>Edit</th>
+      <th>Modify</th>
     </thead>
-    <tbody>
+    <tbody class='link-table-body'>
       <% @links.each do |link| %>
-        <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %>">
-          <td class="read-<%= link.read %>"><%= link.title %></td>
-          <td class="read-<%= link.read %>"><%= link_to link.url, link.url %></td>
+        <tr id="<%= link.id %>" class="link" data-all="<%= link.title %> <%= link.url %> <%= link.tag_names %>">
+          <td class="read-<%= link.read %> affected-by-read"><%= link.title %></td>
+          <td class="read-<%= link.read %> affected-by-read"><%= link_to link.url, link.url %></td>
+          <td class="tags">
+            <% if link.tags %>
+              <% link.tags.each do |tag| %>
+                <button class="btn btn-info btn-xs" type="button"><%= tag.name %></button>
+              <% end %>
+            <% end %>
+          </td>
           <td class="status"><%= link_to "Mark as #{status(link)}", '#' %></td>
-          <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
+          <td>
+            <%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-warning" %>
+            <button class="btn btn-xs btn-danger delete" type="button">Delete</button>
+          </td>
         </tr>
       <% end %>
     </tbody>
