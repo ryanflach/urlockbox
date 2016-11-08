@@ -20,8 +20,8 @@ RSpec.feature 'Link status update' do
 
     click_on 'Mark as Read'
 
-    expect(page).to have_link('Mark as Unread')
     expect(page).to_not have_link('Mark as Read')
+    expect(page).to have_link('Mark as Unread')
   end
 
   scenario 'they mark a read link as unread', js: true do
