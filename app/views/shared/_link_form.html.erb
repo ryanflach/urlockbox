@@ -11,7 +11,7 @@
     </div>
 
     <div class="form-group">
-      <%= f.label :tags %>
+      <%= f.label :tags, "Tags (separate multiple with a comma - Example: 'search, fun, hello')" %>
       <%= f.text_field :tags, class: "form-control", value: target.is_a?(Link) ? target.tag_names : '' %>
     </div>
 
