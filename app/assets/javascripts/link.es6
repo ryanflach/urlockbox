@@ -24,7 +24,11 @@ const reRenderLink = (link) => {
   $link.find('.status').html(
     `<a href='#'>${newReadStatusText(link.read)}</a>`
   );
-  $link.find('.affected-by-read').toggleClass('read-true read-false');
+
+  const $cells = $link.find('.affected-by-read');
+  $cells.removeClass('read-true read-false');
+  $cells.addClass(`read-${link.read}`);
+
   filterByReadStatus();
   filterByTag();
 };
@@ -116,7 +120,7 @@ const filterByTag = () => {
   const $links = $('.link');
 
   $('.tags button').on('click', (e) => {
-    const tagName = $(e.target).text()
+    const tagName = $(e.target).text();
 
     $links.each((index, link) => {
       let $link = $(link);
