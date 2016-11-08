@@ -3,10 +3,11 @@ $(document).ready(() => {
   searchBar();
   filterByReadStatus();
   deleteLinkButtons();
+  filterByTag();
 });
 
 const handleReadStatusUpdate = () => {
-  $('#links .status').on('click', (e) => {
+  $('#links .status a').on('click', (e) => {
     e.preventDefault();
     const id = $(e.target).closest('tr').attr('id');
     $.ajax({
@@ -25,6 +26,7 @@ const reRenderLink = (link) => {
   );
   $link.find('.affected-by-read').toggleClass('read-true read-false');
   filterByReadStatus();
+  filterByTag();
 };
 
 const newReadStatusText = (current) => {
@@ -108,4 +110,25 @@ const deleteLinkButtons = () => {
     }).then((_response) => $tr.remove())
     .fail(handleError);
   });
+};
+
+const filterByTag = () => {
+  const $links = $('.link');
+
+  $('.tags button').on('click', (e) => {
+    const tagName = $(e.target).text()
+
+    $links.each((index, link) => {
+      let $link = $(link);
+      let linkTags = $link.find('.tags').text().split('\n')
+                     .map((tag) => tag.trim())
+                     .filter((tag) => tag.length);
+      if (linkTags.includes(tagName)) {
+        $link.show();
+      } else {
+        $link.hide();
+      }
+    });
+  });
+  handleReadStatusUpdate();
 };
