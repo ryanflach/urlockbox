@@ -25,7 +25,7 @@
       <th>URL</th>
       <th>Tags</th>
       <th>Status</th>
-      <th>Edit</th>
+      <th>Modify</th>
     </thead>
     <tbody class='link-table-body'>
       <% @links.each do |link| %>
@@ -40,7 +40,10 @@
             <% end %>
           </td>
           <td class="status"><%= link_to "Mark as #{status(link)}", '#' %></td>
-          <td><%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-default" %></td>
+          <td>
+            <%= link_to "Edit", edit_link_path(link), class: "btn btn-xs btn-warning" %>
+            <button class="btn btn-xs btn-danger delete" type="button">Delete</button>
+          </td>
         </tr>
       <% end %>
     </tbody>

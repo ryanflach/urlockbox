@@ -2,12 +2,13 @@ $(document).ready(() => {
   handleReadStatusUpdate();
   searchBar();
   filterByReadStatus();
+  deleteLinkButtons();
 });
 
 const handleReadStatusUpdate = () => {
   $('#links .status').on('click', (e) => {
     e.preventDefault();
-    const id = $(e.target).closest('tr')[0].id;
+    const id = $(e.target).closest('tr').attr('id');
     $.ajax({
       url: `api/v1/links/${id}`,
       method: 'put',
@@ -94,4 +95,17 @@ const sortAlphabetically = (links) => {
 
   $('.link-table-body').html(sorted);
   handleReadStatusUpdate();
+};
+
+const deleteLinkButtons = () => {
+  $('.delete').on('click', (e) => {
+    const $tr = $(e.target).closest('tr');
+    const id = $tr.attr('id');
+    $.ajax({
+      url: `api/v1/links/${id}`,
+      method: 'delete',
+      data: { id: id }
+    }).then((_response) => $tr.remove())
+    .fail(handleError);
+  });
 };
