@@ -12,28 +12,32 @@ const handleReadStatusUpdate = () => {
       url: `api/v1/links/${id}`,
       method: 'put',
       data: { id: id }
-    }).then(createLinkHTML)
-    .then(reRenderLink)
+    }).then(reRenderLink)
     .fail(handleError);
   });
 };
 
-const createLinkHTML = (linkData) => {
-  return({
-    id: linkData.id,
-    html:
-      `<tr id='${linkData.id}' class='link' data-all='${linkData.title} ${linkData.url}'>
-        <td class='read-${linkData.read}'>${linkData.title}</td>
-        <td class='read-${linkData.read}'><a href='${linkData.url}'>${linkData.url}</a></td>
-        <td class='status'><a href='#'>${newReadStatusText(linkData.read)}</a></td>
-        <td><a href='/links/${linkData.id}/edit' class='btn btn-xs btn-default'>Edit</a></td>
-      </tr>`
-  });
-};
+// const createLinkHTML = (linkData) => {
+//   return({
+//     id: linkData.id,
+//     html:
+//       `<tr id='${linkData.id}' class='link' data-all='${linkData.title} ${linkData.url} ${linkData.tag_names}'>
+//         <td class='read-${linkData.read}'>${linkData.title}</td>
+//         <td class='read-${linkData.read}'><a href='${linkData.url}'>${linkData.url}</a></td>
+//         <td class='tags'>${linkTagButtons(linkData.tags)}</td>
+//         <td class='status'><a href='#'>${newReadStatusText(linkData.read)}</a></td>
+//         <td><a href='/links/${linkData.id}/edit' class='btn btn-xs btn-default'>Edit</a></td>
+//       </tr>`
+//   });
+// };
 
 const reRenderLink = (link) => {
-  $(`#${link.id}`).replaceWith(link.html);
-  handleReadStatusUpdate();
+  console.log(`Link #${link.id} read status updated to ${link.read}`)
+  $(`#${link.id} .status`).html(
+    `<a href='#'>${newReadStatusText(link.read)}</a>`
+  );
+  $(`#${link.id} .affected-by-read`).toggleClass(`read-${link.read}`);
+  // handleReadStatusUpdate();
   searchBar();
   filterByReadStatus();
 };
