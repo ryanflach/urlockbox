@@ -8,11 +8,9 @@ RSpec.describe Api::V1::LinksController, type: :request do
       to receive(:current_user).
       and_return(user)
 
-    user.links.create!(title: 'Google', url: 'http://www.google.com')
     link = user.links.create!(
-      title: 'Hi',
-      url: 'http://www.hi.com',
-      read: 'true'
+      title: 'Google',
+      url: 'http://www.google.com'
     )
 
     put "/api/v1/links/#{link.id}"
@@ -21,7 +19,7 @@ RSpec.describe Api::V1::LinksController, type: :request do
 
     expect(response).to have_http_status(200)
     expect(response.content_type).to eq('application/json')
-    expect(returned_json['read']).to eq('false')
+    expect(returned_json['read']).to eq('true')
     expect(returned_json['title']).to eq(link.title)
     expect(returned_json['url']).to eq(link.url)
   end
