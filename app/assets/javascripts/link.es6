@@ -112,7 +112,10 @@ const deleteLinkButtons = () => {
       url: `api/v1/links/${id}`,
       method: 'delete',
       data: { id: id }
-    }).then((_response) => $tr.remove())
+    }).then((_response) => {
+      $tr.remove();
+      filterByReadStatus();
+    })
     .fail(handleError);
   });
 };
