@@ -18,10 +18,13 @@ RSpec.feature 'Link status update' do
 
     visit '/'
 
-    click_on 'Mark as Read'
+    within('#links') do
+      click_on 'Mark as Read'
+    end
 
     expect(page).to_not have_link('Mark as Read')
     expect(page).to have_link('Mark as Unread')
+    expect{link.reload}.to change{link.read}.from('false').to('true')
   end
 
   scenario 'they mark a read link as unread', js: true do
@@ -34,9 +37,12 @@ RSpec.feature 'Link status update' do
 
     visit '/'
 
-    click_on 'Mark as Unread'
+    within('#links') do
+      click_on 'Mark as Unread'
+    end
 
     expect(page).to have_link('Mark as Read')
     expect(page).to_not have_link('Mark as Unread')
+    expect{link.reload}.to change{link.read}.from('true').to('false')
   end
 end
