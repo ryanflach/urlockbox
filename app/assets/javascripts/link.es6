@@ -101,6 +101,7 @@ const sortAlphabetically = (links) => {
 
   $('.link-table-body').html(sorted);
   handleReadStatusUpdate();
+  deleteLinkButtons();
 };
 
 const deleteLinkButtons = () => {
